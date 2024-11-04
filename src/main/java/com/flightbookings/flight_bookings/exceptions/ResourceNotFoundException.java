@@ -3,7 +3,7 @@ package com.flightbookings.flight_bookings.exceptions;
 /**
  * Exception thrown when a resource cannot be found.
  */
-public class ResourceNotFoundException extends RuntimeException {
+public final class ResourceNotFoundException extends DomainError {
     /**
      * Constructs a new ResourceNotFoundException with the specified detail message.
      *

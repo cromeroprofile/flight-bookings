@@ -5,6 +5,7 @@ import com.flightbookings.flight_bookings.services.interfaces.PassengerService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,17 +18,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/passengers")
 @Tag(name ="Passenger Management", description = "Operations pertaining to passenger management")
+@RequiredArgsConstructor
 public class PassengerController {
 
     private final PassengerService passengerService;
-    /**
-     * Constructor to initialize the PassengerController with a PassengerService.
-     *
-     * @param passengerService the passenger service for managing passenger operations.
-     */
-    public PassengerController(PassengerService passengerService) {
-        this.passengerService = passengerService;
-    }
+
     /**
      * Creates a new passenger.
      *

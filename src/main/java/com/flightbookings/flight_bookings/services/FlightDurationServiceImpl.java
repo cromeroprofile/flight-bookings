@@ -2,6 +2,7 @@ package com.flightbookings.flight_bookings.services;
 
 import com.flightbookings.flight_bookings.models.Flight;
 import com.flightbookings.flight_bookings.services.interfaces.FlightDurationService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -10,6 +11,7 @@ import java.time.Duration;
  * This service calculates the time difference between a flight's departure and arrival times.
  */
 @Service
+@RequiredArgsConstructor
 public class FlightDurationServiceImpl implements FlightDurationService {
     /**
      * Calculates the duration of a given flight based on its departure and arrival times.

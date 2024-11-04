@@ -3,7 +3,7 @@ package com.flightbookings.flight_bookings.exceptions;
 /**
  * Exception thrown when an unauthorized access attempt is made.
  */
-public class UnauthorizedAccessException extends RuntimeException {
+public final class UnauthorizedAccessException extends DomainError {
     /**
      * Constructs a new UnauthorizedAccessException with the specified detail message.
      *

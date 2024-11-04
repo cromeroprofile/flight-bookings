@@ -3,7 +3,7 @@ package com.flightbookings.flight_bookings.exceptions;
 /**
  * Exception thrown when a user cannot be found.
  */
-public class UserNotFoundException extends RuntimeException {
+public final class UserNotFoundException extends DomainError {
     /**
      * Constructs a new UserNotFoundException with the specified detail message.
      *

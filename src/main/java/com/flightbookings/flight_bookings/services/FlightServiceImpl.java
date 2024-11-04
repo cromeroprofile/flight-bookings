@@ -7,7 +7,7 @@ import com.flightbookings.flight_bookings.models.Seat;
 import com.flightbookings.flight_bookings.repositories.IFlightRepository;
 import com.flightbookings.flight_bookings.repositories.ISeatRepository;
 import com.flightbookings.flight_bookings.services.interfaces.FlightService;
-import com.flightbookings.flight_bookings.services.interfaces.SeatService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,30 +15,17 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 /**
  * Service implementation for managing flight-related operations.
  */
 @Service
+@RequiredArgsConstructor
 public class FlightServiceImpl implements FlightService {
 
     private final IFlightRepository flightRepository;
     private final ISeatRepository seatRepository;
-    private final SeatService seatService;
-    //private final IAirportRepository airportRepository;
-    /**
-     * Constructs a new FlightServiceImpl with the specified dependencies.
-     *
-     * @param flightRepository the flight repository
-     * @param seatRepository the seat repository
-     * @param seatService the seat service for managing seat operations
-     */
-    public FlightServiceImpl(IFlightRepository flightRepository, ISeatRepository seatRepository, SeatService seatService) {
-        this.flightRepository = flightRepository;
-        this.seatRepository = seatRepository;
-        //this.airportRepository = airportRepository;
-        this.seatService = seatService;
-    }
+//    private final SeatService seatService;
+
     /**
      * Creates a new flight and initializes its seats.
      *
@@ -50,7 +37,8 @@ public class FlightServiceImpl implements FlightService {
     public Flight createFlight(Flight flight) {
         flight.setSeats(new ArrayList<>());
         Flight savedFlight = flightRepository.save(flight);
-        List<String> seatIdentifiers = seatService.initializeSeats(savedFlight, flight.getNumRows());
+        // circular dependency
+//        List<String> seatIdentifiers = seatService.initializeSeats(savedFlight);
         savedFlight.setSeats(seatRepository.findByFlight(savedFlight));
         return savedFlight;
     }
@@ -84,7 +72,7 @@ public class FlightServiceImpl implements FlightService {
         return flightRepository.findAll()
                 .stream()
                 .filter(flight -> flight.getFlightAirplane() == airplaneType)
-                .collect(Collectors.toList());
+                .toList();
     }
 
 

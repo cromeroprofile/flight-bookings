@@ -3,7 +3,7 @@ package com.flightbookings.flight_bookings.exceptions;
 /**
  * Exception thrown when a booking cannot be found.
  */
-public class BookingNotFoundException extends RuntimeException {
+public final class BookingNotFoundException extends DomainError {
     /**
      * Constructs a new BookingNotFoundException with the specified detail message.
      *

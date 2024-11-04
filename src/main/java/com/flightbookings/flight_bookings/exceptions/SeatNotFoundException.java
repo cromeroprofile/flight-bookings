@@ -3,7 +3,7 @@ package com.flightbookings.flight_bookings.exceptions;
 /**
  * Exception thrown when a seat cannot be found.
  */
-public class SeatNotFoundException extends RuntimeException {
+public final class SeatNotFoundException extends DomainError {
     /**
      * Constructs a new SeatNotFoundException with the specified detail message.
      *

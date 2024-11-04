@@ -7,6 +7,7 @@ import com.flightbookings.flight_bookings.services.interfaces.FlightService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,17 +20,11 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/flight")
 @Tag(name = "Flight", description = "Operations pertaining to flight management")
+@RequiredArgsConstructor
 public class FlightController {
 
     private final FlightService flightService;
-    /**
-     * Constructor to initialize the FlightController with a FlightService.
-     *
-     * @param flightService the flight service for managing flight operations.
-     */
-    public FlightController(FlightService flightService) {
-        this.flightService = flightService;
-    }
+
     /**
      * Creates a new flight.
      *

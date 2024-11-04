@@ -5,6 +5,7 @@ import com.flightbookings.flight_bookings.exceptions.*;
 import com.flightbookings.flight_bookings.repositories.*;
 import com.flightbookings.flight_bookings.services.interfaces.BookingService;
 import com.flightbookings.flight_bookings.services.interfaces.SeatService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -15,6 +16,7 @@ import java.util.List;
  * Implementation of the BookingService interface for managing booking operations.
  */
 @Service
+@RequiredArgsConstructor
 public class BookingServiceImpl implements BookingService {
 
     private final IBookingRepository bookingRepository;
@@ -24,24 +26,6 @@ public class BookingServiceImpl implements BookingService {
     private final IUserRepository userRepository;
     private final SeatService seatService;
 
-    /**
-     * Constructs a BookingServiceImpl with the necessary repositories and services.
-     *
-     * @param bookingRepository   the repository for managing bookings.
-     * @param seatRepository      the repository for managing seats.
-     * @param flightRepository    the repository for managing flights.
-     * @param passengerRepository the repository for managing passengers.
-     * @param userRepository      the repository for managing users.
-     * @param seatService         the service for managing seat operations.
-     */
-    public BookingServiceImpl(IBookingRepository bookingRepository, ISeatRepository seatRepository, IFlightRepository flightRepository, IPassengerRepository passengerRepository, IUserRepository userRepository, SeatService seatService) {
-        this.bookingRepository = bookingRepository;
-        this.seatRepository = seatRepository;
-        this.flightRepository = flightRepository;
-        this.passengerRepository = passengerRepository;
-        this.userRepository = userRepository;
-        this.seatService = seatService;
-    }
 
     @Override
     public Booking createBooking(Long flightId, Long passengerId, String seatName, Long userId) {

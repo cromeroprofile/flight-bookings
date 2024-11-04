@@ -3,7 +3,7 @@ package com.flightbookings.flight_bookings.exceptions;
 /**
  * Exception thrown when a passenger cannot be found.
  */
-public class PassengerNotFoundException extends RuntimeException {
+public final class PassengerNotFoundException extends DomainError {
     /**
      * Constructs a new PassengerNotFoundException with the specified detail message.
      *

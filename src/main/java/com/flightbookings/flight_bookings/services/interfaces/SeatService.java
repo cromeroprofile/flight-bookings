@@ -25,11 +25,10 @@ public interface SeatService {
      * Initializes seats for a given flight.
      *
      * @param flight  the flight for which seats are being initialized.
-     * @param numRows the number of rows in the flight.
      * @return a list of seat identifiers that were initialized.
      */
     @Transactional
-    List<String> initializeSeats(Flight flight, int numRows);
+    List<String> initializeSeats(Flight flight);
 
     /**
      * Initializes seats for all flights in the system.

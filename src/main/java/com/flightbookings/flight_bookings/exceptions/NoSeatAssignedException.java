@@ -4,7 +4,7 @@ package com.flightbookings.flight_bookings.exceptions;
  * Exception thrown when no seat is assigned for a particular booking or flight.
  */
 
-public class NoSeatAssignedException extends RuntimeException {
+public final class NoSeatAssignedException extends DomainError {
     /**
      * Constructs a new NoSeatAssignedException with the specified detail message.
      *

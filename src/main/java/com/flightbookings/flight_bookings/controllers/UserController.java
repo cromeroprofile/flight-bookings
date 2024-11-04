@@ -5,6 +5,7 @@ import com.flightbookings.flight_bookings.services.interfaces.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,17 +23,11 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/user")
 @Tag(name = "User Management", description = "Operations pertaining to user management")
+@RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
-    /**
-     * Constructor to initialize the UserController with a UserService.
-     *
-     * @param userService the user service for managing user operations.
-     */
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+
     /**
      * Creates a new user.
      *

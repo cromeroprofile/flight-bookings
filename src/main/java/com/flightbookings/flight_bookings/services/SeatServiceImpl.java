@@ -8,31 +8,29 @@ import com.flightbookings.flight_bookings.models.Seat;
 import com.flightbookings.flight_bookings.repositories.ISeatRepository;
 import com.flightbookings.flight_bookings.services.interfaces.FlightService;
 import com.flightbookings.flight_bookings.services.interfaces.SeatService;
-import org.springframework.context.annotation.Lazy;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
 /**
  * Implementation of the SeatService interface for managing seat operations.
  */
 @Service
+@RequiredArgsConstructor
+@Slf4j
 public class SeatServiceImpl implements SeatService {
 
     private final ISeatRepository seatRepository;
     private final FlightService flightService;
-    /**
-     * Constructs a SeatServiceImpl with the required repositories and services.
-     *
-     * @param seatRepository the repository for managing seats.
-     * @param flightService  the service for managing flights.
-     */
-    public SeatServiceImpl(ISeatRepository seatRepository, @Lazy FlightService flightService) {
-        this.seatRepository = seatRepository;
-        this.flightService = flightService;
-    }
+
+
 
     @Override
     public Optional<Seat> getSeatById(Long seatId) {
@@ -41,42 +39,40 @@ public class SeatServiceImpl implements SeatService {
 
     @Override
     @Transactional
-    public List<String> initializeSeats(Flight flight, int numRows) {
-        List<String> seatIdentifiers = new ArrayList<>();
-        List<Seat> seats = new ArrayList<>();
+    public List<String> initializeSeats(Flight flight) {
+        List<Seat> seatsToSave = IntStream.rangeClosed(1, flight.getNumRows())
+                .boxed()
+                .flatMap(row -> Stream.of(ESeatLetter.values())
+                        .map(letter -> {
+                            String seatName = row + letter.name();
+                            if (seatRepository.findByFlightAndSeatName(flight, seatName).isEmpty()) {
+                                Seat seat = new Seat(null, row, letter, false, flight, null);
+                                seat.setSeatName(seatName);
+                                return seat;
+                            } else {
+                                log.debug("Seat {} already exists. Skipping...", seatName);
+                                return null;
+                            }
+                        })
+                )
+                .filter(Objects::nonNull)
+                .toList();
 
-        for (int row = 1; row <= numRows; row++) {
-            for (ESeatLetter letter : ESeatLetter.values()) {
-                String seatName = row + letter.name();
-
-                boolean seatExists = seatRepository.findByFlightAndSeatName(flight, seatName).isPresent();
-                if (!seatExists) {
-                    Seat seat = new Seat(null, row, letter, false, flight, null);
-                    seat.setSeatName(seatName);
-                    seats.add(seat);
-                    seatIdentifiers.add(seatName);
-                } else {
-                    System.out.println("Seat " + seatName + " already exists. Skipping...");
-                }
-            }
+        if (!seatsToSave.isEmpty()) {
+            seatRepository.saveAll(seatsToSave);
         }
-        if (!seats.isEmpty()) {
-            seatRepository.saveAll(seats);
-        }
 
-        return seatIdentifiers;
+        return seatsToSave.stream()
+                .map(Seat::getSeatName)
+                .toList();
     }
 
     @Override
     @Transactional
     public void initializeSeatsForAllFlights() {
         List<Flight> flights = flightService.getAllFlights();
-
-        for (Flight flight : flights) {
-            initializeSeats(flight, flight.getNumRows());
-        }
-
-        System.out.println("Seats initialized for all flights.");
+        flights.forEach(this::initializeSeats);
+        log.debug("Seats initialized for all flights..");
     }
 
     @Override

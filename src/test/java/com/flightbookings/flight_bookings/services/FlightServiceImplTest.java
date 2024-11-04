@@ -62,14 +62,12 @@ class FlightServiceImplTest {
     @Test
     void testCreateFlight() {
         when(flightRepository.save(any(Flight.class))).thenAnswer(invocation -> invocation.getArgument(0));
-        when(seatService.initializeSeats(any(Flight.class), anyInt())).thenReturn(List.of("1A", "1B", "1C"));
         when(seatRepository.findByFlight(any(Flight.class))).thenReturn(new ArrayList<>());
 
         Flight createdFlight = flightService.createFlight(flight);
 
         assertNotNull(createdFlight, "The created flight should not be null");
         verify(flightRepository, times(1)).save(flight);
-        verify(seatService, times(1)).initializeSeats(createdFlight, flight.getNumRows());
         verify(seatRepository, times(1)).findByFlight(createdFlight);
     }
 

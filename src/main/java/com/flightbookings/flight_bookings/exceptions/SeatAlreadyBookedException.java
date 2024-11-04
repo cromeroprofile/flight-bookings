@@ -3,7 +3,7 @@ package com.flightbookings.flight_bookings.exceptions;
 /**
  * Exception thrown when a seat is already booked.
  */
-public class SeatAlreadyBookedException extends RuntimeException {
+public final class SeatAlreadyBookedException extends DomainError {
     /**
      * Constructs a new SeatAlreadyBookedException with the specified detail message.
      *
